@@ -21,22 +21,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Bump version
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          npm version patch -m "Release version %s"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push changes and tags
-        run: |
-          git push origin main --follow-tags
-
       - name: Build package
         run: npm run build
 
-      - name: Deploy to release branch
+      - name: Bump version
         run: |
-          git checkout -b release
-          git push origin release --force
+          npm version patch -m "Release version %s [CI skip]"
+          
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git push origin main --follow-tags
+          
+          npm publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
