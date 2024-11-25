@@ -33,7 +33,7 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Release version %s [CI skip]"
+          git diff-index --quiet HEAD || git commit -m "Release version - update dependencies [CI skip]"
           git push origin main --follow-tags
           npm version patch -m "Release version %s [CI skip]"
           npm publish --access=public
