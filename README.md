@@ -41,3 +41,9 @@ Alias for the `all` method. Returns all items in the collection.
 ```javascript
 items.get(); // [1, 2, 3]
 ```
+
+### entries()
+Returns an array of key-value pairs for items in the collection.
+```javascript
+items.entries(); // [[0, 1], [1, 2], [2, 3]]
+```
