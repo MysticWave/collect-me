@@ -33,4 +33,4 @@ jobs:
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           npm version patch -m "Release version %s [CI skip]"
-          npm publish
+          npm publish --access=public
