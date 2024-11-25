@@ -47,3 +47,9 @@ Returns an array of key-value pairs for items in the collection.
 ```javascript
 items.entries(); // [[0, 1], [1, 2], [2, 3]]
 ```
+
+### push(item)
+Adds an item to the collection.
+```javascript
+items.push(4); // [1, 2, 3, 4]
+```
