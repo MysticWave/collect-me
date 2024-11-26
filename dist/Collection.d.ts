@@ -90,13 +90,13 @@ export declare class Collection {
      */
     whereBetween(condition: string, min: number | number[], max?: number | undefined): Collection;
     /**
-    * Filters the collection where the specified key's value is not between two values.
-    * @param condition The key to check.
-    * @param min The minimum value or range.
-    * @param max The maximum value.
-    * @returns {Collection} The filtered collection instance.
-    * @throws {Error} If the min value is an array and the max value is not undefined.
-    */
+     * Filters the collection where the specified key's value is not between two values.
+     * @param condition The key to check.
+     * @param min The minimum value or range.
+     * @param max The maximum value.
+     * @returns {Collection} The filtered collection instance.
+     * @throws {Error} If the min value is an array and the max value is not undefined.
+     */
     whereNotBetween(condition: string, min: number | number[], max?: number | undefined): Collection;
     /**
      * Filters the collection where the specified key's value is null.
@@ -181,6 +181,17 @@ export declare class Collection {
      * @returns {Collection} The sorted collection instance.
      */
     sortBy(key: string): Collection;
+    /**
+     * Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortByDesc(key: string): Collection;
+    /**
+     * Reverses the order of the items in the collection.
+     * @returns {Collection} The reversed collection instance.
+     */
+    reverse(): Collection;
     /**
      * Splits the collection into smaller chunks of a given size.
      *

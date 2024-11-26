@@ -115,20 +115,20 @@ class Collection {
     where(condition, operatorOrValue, value = undefined) {
         return this.filter((item) => {
             var _a, _b;
-            if (typeof item !== 'object' || !(condition in item))
+            if (typeof item !== "object" || !(condition in item))
                 return false;
             if (value === undefined)
                 return item[condition] === operatorOrValue;
             const operators = {
-                '=': (v) => v == value,
-                '<': (v) => v < value,
-                '<=': (v) => v <= value,
-                '>': (v) => v > value,
-                '>=': (v) => v >= value,
-                '!=': (v) => v != value,
+                "=": (v) => v == value,
+                "<": (v) => v < value,
+                "<=": (v) => v <= value,
+                ">": (v) => v > value,
+                ">=": (v) => v >= value,
+                "!=": (v) => v != value,
                 // strict comparison
-                '==': (v) => v === value,
-                '!==': (v) => v !== value,
+                "==": (v) => v === value,
+                "!==": (v) => v !== value,
             };
             return (_b = (_a = operators[operatorOrValue]) === null || _a === void 0 ? void 0 : _a.call(operators, item[condition])) !== null && _b !== void 0 ? _b : false;
         });
@@ -140,7 +140,7 @@ class Collection {
      * @returns {Collection} The filtered collection instance.
      */
     whereNot(condition, value) {
-        return this.where(condition, '!=', value);
+        return this.where(condition, "!=", value);
     }
     /**
      * Filters the collection where the specified key's value is in a list of values.
@@ -181,13 +181,13 @@ class Collection {
         });
     }
     /**
-    * Filters the collection where the specified key's value is not between two values.
-    * @param condition The key to check.
-    * @param min The minimum value or range.
-    * @param max The maximum value.
-    * @returns {Collection} The filtered collection instance.
-    * @throws {Error} If the min value is an array and the max value is not undefined.
-    */
+     * Filters the collection where the specified key's value is not between two values.
+     * @param condition The key to check.
+     * @param min The minimum value or range.
+     * @param max The maximum value.
+     * @returns {Collection} The filtered collection instance.
+     * @throws {Error} If the min value is an array and the max value is not undefined.
+     */
     whereNotBetween(condition, min, max = undefined) {
         return this.filter((item) => {
             const value = item[condition];
@@ -214,7 +214,7 @@ class Collection {
      * @returns {Collection} The filtered collection instance.
      */
     whereNotNull(condition) {
-        return this.where(condition, '!=', null);
+        return this.where(condition, "!=", null);
     }
     /**
      * Returns the first item in the collection.
@@ -328,6 +328,23 @@ class Collection {
         return this;
     }
     /**
+     * Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortByDesc(key) {
+        this.items = this.sortBy(key).reverse().all();
+        return this;
+    }
+    /**
+     * Reverses the order of the items in the collection.
+     * @returns {Collection} The reversed collection instance.
+     */
+    reverse() {
+        this.items = this.items.reverse();
+        return this;
+    }
+    /**
      * Splits the collection into smaller chunks of a given size.
      *
      * @param {number} size - The size of each chunk.
@@ -363,14 +380,14 @@ class Collection {
     unique(key) {
         const seen = new Set();
         const result = key
-            ? this.items.filter(item => {
+            ? this.items.filter((item) => {
                 const value = item[key];
                 if (seen.has(value))
                     return false;
                 seen.add(value);
                 return true;
             })
-            : this.items.filter(item => {
+            : this.items.filter((item) => {
                 if (seen.has(item))
                     return false;
                 seen.add(item);
@@ -427,7 +444,7 @@ class Collection {
      * const difference = items.diff([2, 3, 4]); // [1]
      */
     diff(values) {
-        const diffItems = this.items.filter(item => !values.includes(item));
+        const diffItems = this.items.filter((item) => !values.includes(item));
         return new Collection(diffItems);
     }
     /**
