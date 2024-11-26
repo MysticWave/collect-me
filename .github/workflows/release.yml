@@ -1,39 +1,47 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
+    release:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-          registry-url: 'https://registry.npmjs.org'
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18.x
+                  registry-url: "https://registry.npmjs.org"
 
-      - name: Install dependencies
-        run: npm ci
+            - name: Install dependencies
+              run: npm ci
 
-      - name: Build package
-        run: npm run build
+            - name: Build package
+              run: npm run build
 
-      - name: Bump version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add .
-          git diff-index --quiet HEAD || git commit -m "Release version - update dependencies [CI skip]"
-          git push origin main --follow-tags
-          npm version patch -m "Release version %s [CI skip]"
-          npm publish --access=public
+            - name: Bump version
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: |
+                  git config user.name "GitHub Actions"
+                  git config user.email "actions@github.com"
+                  git add .
+                  git diff-index --quiet HEAD || git commit -m "Release version - update dependencies [CI skip]"
+                  git push origin main --follow-tags
+                  npm version patch -m "Release version %s [CI skip]"
+
+                  # Extract the new version (e.g., 1.2.3)
+                  VERSION=$(npm pkg get version | tr -d '"')
+
+                  # Create a branch for the new version
+                  git checkout -b release/v$VERSION
+                  git push origin release/v$VERSION
+
+                  npm publish --access=public
