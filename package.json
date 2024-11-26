@@ -1,6 +1,6 @@
 {
     "name": "@mysticwave/collect-me",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A small package containing Javascript equivalent of Laravel Collections.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
