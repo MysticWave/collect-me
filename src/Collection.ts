@@ -116,29 +116,33 @@ export class Collection {
      * @param operatorOrValue The operator or value to compare.
      * @param value Optional value to compare when using an operator.
      * @returns {Collection} The filtered collection instance.
-     * 
+     *
      * @example
      * const items = collect([{ id: 1 }, { id: 2 }, { id: 3 }]);
      * const filtered = items.where('id', '>', 1); // [{ id: 2 }, { id: 3 }]
      * // available operators: '=', '<', '<=', '>', '>=', '!=', '==', '!=='
      */
-    where(condition: string, operatorOrValue: any, value: any = undefined): Collection {
+    where(
+        condition: string,
+        operatorOrValue: any,
+        value: any = undefined
+    ): Collection {
         return this.filter((item) => {
-            if (typeof item !== 'object' || !(condition in item)) return false;
+            if (typeof item !== "object" || !(condition in item)) return false;
             if (value === undefined) return item[condition] === operatorOrValue;
-    
+
             const operators: GenericObject = {
-                '=': (v: any) => v == value,
-                '<': (v: any) => v < value,
-                '<=': (v: any) => v <= value,
-                '>': (v: any) => v > value,
-                '>=': (v: any) => v >= value,
-                '!=': (v: any) => v != value,
+                "=": (v: any) => v == value,
+                "<": (v: any) => v < value,
+                "<=": (v: any) => v <= value,
+                ">": (v: any) => v > value,
+                ">=": (v: any) => v >= value,
+                "!=": (v: any) => v != value,
                 // strict comparison
-                '==': (v: any) => v === value,
-                '!==': (v: any) => v !== value,
+                "==": (v: any) => v === value,
+                "!==": (v: any) => v !== value,
             };
-    
+
             return operators[operatorOrValue]?.(item[condition]) ?? false;
         });
     }
@@ -150,7 +154,7 @@ export class Collection {
      * @returns {Collection} The filtered collection instance.
      */
     whereNot(condition: string, value: any): Collection {
-        return this.where(condition, '!=', value);
+        return this.where(condition, "!=", value);
     }
 
     /**
@@ -181,7 +185,11 @@ export class Collection {
      * @returns {Collection} The filtered collection instance.
      * @throws {Error} If the min value is an array and the max value is not undefined.
      */
-    whereBetween(condition: string, min: number|number[], max: number|undefined = undefined): Collection {
+    whereBetween(
+        condition: string,
+        min: number | number[],
+        max: number | undefined = undefined
+    ): Collection {
         return this.filter((item) => {
             const value = item[condition];
             if (Array.isArray(min)) {
@@ -195,14 +203,18 @@ export class Collection {
     }
 
     /**
-    * Filters the collection where the specified key's value is not between two values.
-    * @param condition The key to check.
-    * @param min The minimum value or range.
-    * @param max The maximum value.
-    * @returns {Collection} The filtered collection instance.
-    * @throws {Error} If the min value is an array and the max value is not undefined.
-    */
-    whereNotBetween(condition: string, min: number|number[], max: number|undefined = undefined): Collection {
+     * Filters the collection where the specified key's value is not between two values.
+     * @param condition The key to check.
+     * @param min The minimum value or range.
+     * @param max The maximum value.
+     * @returns {Collection} The filtered collection instance.
+     * @throws {Error} If the min value is an array and the max value is not undefined.
+     */
+    whereNotBetween(
+        condition: string,
+        min: number | number[],
+        max: number | undefined = undefined
+    ): Collection {
         return this.filter((item) => {
             const value = item[condition];
             if (Array.isArray(min)) {
@@ -230,7 +242,7 @@ export class Collection {
      * @returns {Collection} The filtered collection instance.
      */
     whereNotNull(condition: string): Collection {
-        return this.where(condition, '!=', null);
+        return this.where(condition, "!=", null);
     }
 
     /**
@@ -257,7 +269,11 @@ export class Collection {
      * @param value Optional value to compare when using an operator.
      * @returns {any} The first matching item.
      */
-    firstWhere(condition: string, operatorOrValue: any, value: any = undefined): any {
+    firstWhere(
+        condition: string,
+        operatorOrValue: any,
+        value: any = undefined
+    ): any {
         return this.where(condition, operatorOrValue, value).first();
     }
 
@@ -328,14 +344,16 @@ export class Collection {
      * @returns {Collection} An object grouped by the specified key.
      */
     groupBy(key: string): Collection {
-        return collect(this.items.reduce((acc, item) => {
-            const group = item[key];
-            if (!acc[group]) {
-                acc[group] = [];
-            }
-            acc[group].push(item);
-            return acc;
-        }, {}));
+        return collect(
+            this.items.reduce((acc, item) => {
+                const group = item[key];
+                if (!acc[group]) {
+                    acc[group] = [];
+                }
+                acc[group].push(item);
+                return acc;
+            }, {})
+        );
     }
 
     /**
@@ -353,6 +371,25 @@ export class Collection {
             }
             return 0;
         });
+        return this;
+    }
+
+    /**
+     * Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortByDesc(key: string): Collection {
+        this.items = this.sortBy(key).reverse().all();
+        return this;
+    }
+
+    /**
+     * Reverses the order of the items in the collection.
+     * @returns {Collection} The reversed collection instance.
+     */
+    reverse(): Collection {
+        this.items = this.items.reverse();
         return this;
     }
 
@@ -392,17 +429,17 @@ export class Collection {
     unique(key?: string): Collection {
         const seen = new Set();
         const result = key
-            ? this.items.filter(item => {
-                const value = item[key];
-                if (seen.has(value)) return false;
-                seen.add(value);
-                return true;
-            })
-            : this.items.filter(item => {
-                if (seen.has(item)) return false;
-                seen.add(item);
-                return true;
-            });
+            ? this.items.filter((item) => {
+                  const value = item[key];
+                  if (seen.has(value)) return false;
+                  seen.add(value);
+                  return true;
+              })
+            : this.items.filter((item) => {
+                  if (seen.has(item)) return false;
+                  seen.add(item);
+                  return true;
+              });
         return new Collection(result);
     }
 
@@ -458,7 +495,7 @@ export class Collection {
      * const difference = items.diff([2, 3, 4]); // [1]
      */
     diff(values: any[]): Collection {
-        const diffItems = this.items.filter(item => !values.includes(item));
+        const diffItems = this.items.filter((item) => !values.includes(item));
         return new Collection(diffItems);
     }
 
