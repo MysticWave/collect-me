@@ -194,18 +194,26 @@ Filters the collection where a specific condition is met.
 ```javascript
 items.where("id", 1); // [{ id: 1 }]
 items.where("id", ">", 1); // [{ id: 2 }, {id: 3}]
+
+items.where("name", "LIKE", "%anderson"); // [{name: 'Thomas Anderson'}]
+items.where("name", "LIKE", "Thomas%"); // [{name: 'Thomas Anderson'}]
+items.where("name", "LIKE", "%mas An%"); // [{name: 'Thomas Anderson'}]
 ```
 
-| operator | description        | example |           |
-| -------- | ------------------ | ------- | --------- |
-| =        | is equal           | a == b  | (default) |
-| <        | lower than         | a < b   |           |
-| <=       | lower or equal     | a <= b  |           |
-| >        | higher than        | a > b   |           |
-| >=       | higher or equal    | a >= b  |           |
-| !=       | not equal          | a != b  |           |
-| ==       | strictly equal     | a === b |           |
-| !==      | strictly not equal | a !== b |           |
+| operator  | description                          | example |           |
+| --------- | ------------------------------------ | ------- | --------- |
+| =         | is equal                             | a == b  | (default) |
+| <         | lower than                           | a < b   |           |
+| <=        | lower or equal                       | a <= b  |           |
+| >         | higher than                          | a > b   |           |
+| >=        | higher or equal                      | a >= b  |           |
+| !=        | not equal                            | a != b  |           |
+| ==        | strictly equal                       | a === b |           |
+| !==       | strictly not equal                   | a !== b |           |
+| LIKE      | string contains                      |         |           |
+| ILIKE     | string contains (case sensitive)     |         |           |
+| NOT LIKE  | string not contains                  |         |           |
+| NOT ILIKE | string not contains (case sensitive) |         |           |
 
 ### whereNot(condition, value)
 

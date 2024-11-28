@@ -129,7 +129,7 @@ export class Collection {
     ): Collection {
         return this.filter((item) => {
             if (typeof item !== "object" || !(condition in item)) return false;
-            if (value === undefined) return item[condition] === operatorOrValue;
+            if (value === undefined) return item[condition] == operatorOrValue;
 
             const operators: GenericObject = {
                 "=": (v: any) => v == value,
@@ -141,9 +141,13 @@ export class Collection {
                 // strict comparison
                 "==": (v: any) => v === value,
                 "!==": (v: any) => v !== value,
+                'like': (v: any) => like(v, value),
+                'ilike': (v: any) => like(v, value, true),
+                'not like': (v: any) => !like(v, value),
+                'not ilike': (v: any) => !like(v, value, true),
             };
 
-            return operators[operatorOrValue]?.(item[condition]) ?? false;
+            return operators[operatorOrValue.toLowerCase()]?.(item[condition]) ?? false;
         });
     }
 
@@ -574,3 +578,24 @@ export class Collection {
 export const collect = (items: any[] = []) => {
     return new Collection(items);
 };
+
+const like = (search: any, subject: any, strict: boolean = false) => {
+    if (!strict) {
+        search = search.toString().toLowerCase();
+        subject = subject.toString().toLowerCase();
+    }
+
+    if (subject.startsWith('%') && subject.endsWith('%')) {
+        return search.includes(subject.slice(1, -1));
+    }
+
+    if (subject.startsWith('%')) {
+        return search.endsWith(subject.slice(1));
+    }
+
+    if (subject.endsWith('%')) {
+        return search.startsWith(subject.slice(0, -1));
+    }
+
+    return search == subject;
+}
