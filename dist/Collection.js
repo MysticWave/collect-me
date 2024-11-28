@@ -118,7 +118,7 @@ class Collection {
             if (typeof item !== "object" || !(condition in item))
                 return false;
             if (value === undefined)
-                return item[condition] === operatorOrValue;
+                return item[condition] == operatorOrValue;
             const operators = {
                 "=": (v) => v == value,
                 "<": (v) => v < value,
@@ -129,8 +129,12 @@ class Collection {
                 // strict comparison
                 "==": (v) => v === value,
                 "!==": (v) => v !== value,
+                'like': (v) => like(v, value),
+                'ilike': (v) => like(v, value, true),
+                'not like': (v) => !like(v, value),
+                'not ilike': (v) => !like(v, value, true),
             };
-            return (_b = (_a = operators[operatorOrValue]) === null || _a === void 0 ? void 0 : _a.call(operators, item[condition])) !== null && _b !== void 0 ? _b : false;
+            return (_b = (_a = operators[operatorOrValue.toLowerCase()]) === null || _a === void 0 ? void 0 : _a.call(operators, item[condition])) !== null && _b !== void 0 ? _b : false;
         });
     }
     /**
@@ -520,3 +524,19 @@ const collect = (items = []) => {
     return new Collection(items);
 };
 exports.collect = collect;
+const like = (search, subject, strict = false) => {
+    if (!strict) {
+        search = search.toString().toLowerCase();
+        subject = subject.toString().toLowerCase();
+    }
+    if (subject.startsWith('%') && subject.endsWith('%')) {
+        return search.includes(subject.slice(1, -1));
+    }
+    if (subject.startsWith('%')) {
+        return search.endsWith(subject.slice(1));
+    }
+    if (subject.endsWith('%')) {
+        return search.startsWith(subject.slice(0, -1));
+    }
+    return search == subject;
+};
