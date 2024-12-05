@@ -13,9 +13,9 @@ export class Collection {
         // Return a Proxy to allow index access
         return new Proxy(this, {
             get(target: Collection, prop: any): any {
-                if (typeof prop === 'symbol') {
+                if (typeof prop === "symbol") {
                     // Handle Symbol properties, e.g., Symbol.iterator
-                    return target[prop];
+                    return target[prop as any];
                 }
                 if (prop in target) {
                     return target[prop]; // Access class properties/methods
@@ -146,13 +146,16 @@ export class Collection {
                 // strict comparison
                 "==": (v: any) => v === value,
                 "!==": (v: any) => v !== value,
-                'like': (v: any) => like(v, value),
-                'ilike': (v: any) => like(v, value, true),
-                'not like': (v: any) => !like(v, value),
-                'not ilike': (v: any) => !like(v, value, true),
+                like: (v: any) => like(v, value),
+                ilike: (v: any) => like(v, value, true),
+                "not like": (v: any) => !like(v, value),
+                "not ilike": (v: any) => !like(v, value, true),
             };
 
-            return operators[operatorOrValue.toLowerCase()]?.(item[condition]) ?? false;
+            return (
+                operators[operatorOrValue.toLowerCase()]?.(item[condition]) ??
+                false
+            );
         });
     }
 
@@ -300,7 +303,7 @@ export class Collection {
      * @returns {Collection} A collection of the plucked values.
      */
     pluck(key: string): Collection {
-        return this.map(item => getValueByPath(item, key));
+        return this.map((item) => getValueByPath(item, key));
     }
 
     /**
@@ -590,21 +593,21 @@ const like = (search: any, subject: any, strict: boolean = false) => {
         subject = subject.toString().toLowerCase();
     }
 
-    if (subject.startsWith('%') && subject.endsWith('%')) {
+    if (subject.startsWith("%") && subject.endsWith("%")) {
         return search.includes(subject.slice(1, -1));
     }
 
-    if (subject.startsWith('%')) {
+    if (subject.startsWith("%")) {
         return search.endsWith(subject.slice(1));
     }
 
-    if (subject.endsWith('%')) {
+    if (subject.endsWith("%")) {
         return search.startsWith(subject.slice(0, -1));
     }
 
     return search == subject;
-}
+};
 
 const getValueByPath = (obj: GenericObject, path: string) => {
-    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
-}
+    return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+};
