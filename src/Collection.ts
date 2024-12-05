@@ -600,6 +600,6 @@ const like = (search: any, subject: any, strict: boolean = false) => {
     return search == subject;
 }
 
-const getValueByPath = (obj: GenericObject, path: string): any {
+const getValueByPath = (obj: GenericObject, path: string) => {
     return path.split('.').reduce((acc, key) => acc && acc[key], obj);
 }
