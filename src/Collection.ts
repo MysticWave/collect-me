@@ -13,9 +13,14 @@ export class Collection {
         // Return a Proxy to allow index access
         return new Proxy(this, {
             get(target: Collection, prop: any): any {
+                if (typeof prop === 'symbol') {
+                    // Handle Symbol properties, e.g., Symbol.iterator
+                    return target[prop];
+                }
                 if (prop in target) {
                     return target[prop]; // Access class properties/methods
-                } else if (!isNaN(prop)) {
+                }
+                if (!isNaN(prop)) {
                     // If the property is a number (index), return the corresponding item
                     return target.items[prop];
                 }
