@@ -295,7 +295,7 @@ export class Collection {
      * @returns {Collection} A collection of the plucked values.
      */
     pluck(key: string): Collection {
-        return this.map((item) => item[key]);
+        return this.map(item => getValueByPath(item, key));
     }
 
     /**
@@ -598,4 +598,8 @@ const like = (search: any, subject: any, strict: boolean = false) => {
     }
 
     return search == subject;
+}
+
+const getValueByPath = (obj: GenericObject, path: string): any {
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
 }
