@@ -10,10 +10,14 @@ class Collection {
         // Return a Proxy to allow index access
         return new Proxy(this, {
             get(target, prop) {
+                if (typeof prop === "symbol") {
+                    // Handle Symbol properties, e.g., Symbol.iterator
+                    return target[prop];
+                }
                 if (prop in target) {
                     return target[prop]; // Access class properties/methods
                 }
-                else if (!isNaN(prop)) {
+                if (!isNaN(prop)) {
                     // If the property is a number (index), return the corresponding item
                     return target.items[prop];
                 }
@@ -129,12 +133,12 @@ class Collection {
                 // strict comparison
                 "==": (v) => v === value,
                 "!==": (v) => v !== value,
-                'like': (v) => like(v, value),
-                'ilike': (v) => like(v, value, true),
-                'not like': (v) => !like(v, value),
-                'not ilike': (v) => !like(v, value, true),
+                like: (v) => like(v, value),
+                ilike: (v) => like(v, value, true),
+                "not like": (v) => !like(v, value),
+                "not ilike": (v) => !like(v, value, true),
             };
-            return (_b = (_a = operators[operatorOrValue.toLowerCase()]) === null || _a === void 0 ? void 0 : _a.call(operators, item[condition])) !== null && _b !== void 0 ? _b : false;
+            return ((_b = (_a = operators[operatorOrValue.toLowerCase()]) === null || _a === void 0 ? void 0 : _a.call(operators, item[condition])) !== null && _b !== void 0 ? _b : false);
         });
     }
     /**
@@ -258,7 +262,7 @@ class Collection {
      * @returns {Collection} A collection of the plucked values.
      */
     pluck(key) {
-        return this.map(item => getValueByPath(item, key));
+        return this.map((item) => getValueByPath(item, key));
     }
     /**
      * Returns the number of items in the collection.
@@ -529,17 +533,17 @@ const like = (search, subject, strict = false) => {
         search = search.toString().toLowerCase();
         subject = subject.toString().toLowerCase();
     }
-    if (subject.startsWith('%') && subject.endsWith('%')) {
+    if (subject.startsWith("%") && subject.endsWith("%")) {
         return search.includes(subject.slice(1, -1));
     }
-    if (subject.startsWith('%')) {
+    if (subject.startsWith("%")) {
         return search.endsWith(subject.slice(1));
     }
-    if (subject.endsWith('%')) {
+    if (subject.endsWith("%")) {
         return search.startsWith(subject.slice(0, -1));
     }
     return search == subject;
 };
 const getValueByPath = (obj, path) => {
-    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
+    return path.split(".").reduce((acc, key) => acc && acc[key], obj);
 };
