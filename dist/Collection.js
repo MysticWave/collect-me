@@ -258,7 +258,7 @@ class Collection {
      * @returns {Collection} A collection of the plucked values.
      */
     pluck(key) {
-        return this.map((item) => item[key]);
+        return this.map(item => getValueByPath(item, key));
     }
     /**
      * Returns the number of items in the collection.
@@ -539,4 +539,7 @@ const like = (search, subject, strict = false) => {
         return search.startsWith(subject.slice(0, -1));
     }
     return search == subject;
+};
+const getValueByPath = (obj, path) => {
+    return path.split('.').reduce((acc, key) => acc && acc[key], obj);
 };
