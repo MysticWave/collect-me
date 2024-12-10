@@ -447,6 +447,21 @@ export class Collection {
     }
 
     /**
+     * Flattens a multi-dimensional collection into a single dimension.
+     * @param depth The depth to flatten the collection.
+     * @returns {Collection} The flattened collection instance.
+     */
+    flatten(depth: number = Infinity): Collection {
+        for (let i = 0; i < depth; i++) {
+            this.items = flat(this.items);
+            if (this.items.every((item) => !Array.isArray(item))) {
+                break;
+            }
+        }
+        return this;
+    }
+
+    /**
      * Splits the collection into smaller chunks of a given size.
      *
      * @param {number} size - The size of each chunk.
@@ -651,4 +666,13 @@ const like = (search: any, subject: any, strict: boolean = false) => {
 
 const getValueByPath = (obj: GenericObject, path: string) => {
     return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+};
+
+const flat = (items: any[]) => {
+    return items.reduce((acc, item) => {
+        if (Array.isArray(item)) {
+            return acc.concat(flat(item));
+        }
+        return acc.concat(item);
+    }, []);
 };

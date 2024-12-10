@@ -2,6 +2,8 @@
 
 A TypeScript implementation of a Laravel-inspired `Collection` class, providing powerful utility methods for handling arrays of items in a more expressive way.
 
+Note: This package is mainly for fun and educating purposes. If you are looking more advanced package, try: [Collect.JS](https://github.com/ecrmnn/collect.js)
+
 ## Installation
 
 You can install the package via npm:
@@ -118,6 +120,15 @@ Reverses the order of the items in the collection.
 
 ```javascript
 items.reverse(); // [3, 2, 1]
+```
+
+### flatten(depth)
+
+Flattens a multi-dimensional collection into a single dimension.
+
+```javascript
+items = collect([1, 2, 3, [11, 12, 13]]);
+items.flatten(); // [1, 2, 3, 11, 12, 13]
 ```
 
 ### chunk()
