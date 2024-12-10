@@ -219,6 +219,12 @@ export declare class Collection {
      */
     reverse(): Collection;
     /**
+     * Flattens a multi-dimensional collection into a single dimension.
+     * @param depth The depth to flatten the collection.
+     * @returns {Collection} The flattened collection instance.
+     */
+    flatten(depth?: number): Collection;
+    /**
      * Splits the collection into smaller chunks of a given size.
      *
      * @param {number} size - The size of each chunk.

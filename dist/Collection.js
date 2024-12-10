@@ -390,6 +390,20 @@ class Collection {
         return this;
     }
     /**
+     * Flattens a multi-dimensional collection into a single dimension.
+     * @param depth The depth to flatten the collection.
+     * @returns {Collection} The flattened collection instance.
+     */
+    flatten(depth = Infinity) {
+        for (let i = 0; i < depth; i++) {
+            this.items = flat(this.items);
+            if (this.items.every((item) => !Array.isArray(item))) {
+                break;
+            }
+        }
+        return this;
+    }
+    /**
      * Splits the collection into smaller chunks of a given size.
      *
      * @param {number} size - The size of each chunk.
@@ -583,4 +597,12 @@ const like = (search, subject, strict = false) => {
 };
 const getValueByPath = (obj, path) => {
     return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+};
+const flat = (items) => {
+    return items.reduce((acc, item) => {
+        if (Array.isArray(item)) {
+            return acc.concat(flat(item));
+        }
+        return acc.concat(item);
+    }, []);
 };
