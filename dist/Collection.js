@@ -319,11 +319,23 @@ class Collection {
         }, {}));
     }
     /**
-     * Sorts the items in the collection by a specified key.
+     * Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortBy(key, order = "ASC") {
+        if (order.toLowerCase() === "desc") {
+            return this.sortByDesc(key);
+        }
+        return this.sortByAsc(key);
+    }
+    /**
+     * Sorts the items in the collection by a specified key in descending order.
      * @param key The key to sort items by.
      * @returns {Collection} The sorted collection instance.
      */
-    sortBy(key) {
+    sortByAsc(key) {
         this.items = this.items.sort((a, b) => {
             if (a[key] > b[key]) {
                 return 1;
@@ -341,8 +353,33 @@ class Collection {
      * @returns {Collection} The sorted collection instance.
      */
     sortByDesc(key) {
-        this.items = this.sortBy(key).reverse().all();
+        this.items = this.sortByAsc(key).reverse().all();
         return this;
+    }
+    /**
+     * Alias for the `sortBy` method. Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderBy(key, direction = "ASC") {
+        return this.sortBy(key, direction);
+    }
+    /**
+     * Alias for the `sortByAsc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByAsc(key) {
+        return this.sortByAsc(key);
+    }
+    /**
+     * Alias for the `sortByDesc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByDesc(key) {
+        return this.sortByDesc(key);
     }
     /**
      * Reverses the order of the items in the collection.

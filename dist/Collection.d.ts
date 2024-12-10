@@ -1,4 +1,4 @@
-import { callback } from "./types";
+import { callback, SortOrder } from "./types";
 /**
  * Laravel based Collection class
  */
@@ -176,17 +176,43 @@ export declare class Collection {
      */
     groupBy(key: string): Collection;
     /**
-     * Sorts the items in the collection by a specified key.
+     * Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortBy(key: string, order?: SortOrder): Collection;
+    /**
+     * Sorts the items in the collection by a specified key in descending order.
      * @param key The key to sort items by.
      * @returns {Collection} The sorted collection instance.
      */
-    sortBy(key: string): Collection;
+    sortByAsc(key: string): Collection;
     /**
      * Sorts the items in the collection by a specified key in descending order.
      * @param key The key to sort items by.
      * @returns {Collection} The sorted collection instance.
      */
     sortByDesc(key: string): Collection;
+    /**
+     * Alias for the `sortBy` method. Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderBy(key: string, direction?: SortOrder): Collection;
+    /**
+     * Alias for the `sortByAsc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByAsc(key: string): Collection;
+    /**
+     * Alias for the `sortByDesc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByDesc(key: string): Collection;
     /**
      * Reverses the order of the items in the collection.
      * @returns {Collection} The reversed collection instance.
