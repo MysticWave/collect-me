@@ -1,4 +1,4 @@
-import { callback, GenericObject } from "./types";
+import { callback, GenericObject, SortOrder } from "./types";
 
 /**
  * Laravel based Collection class
@@ -369,11 +369,24 @@ export class Collection {
     }
 
     /**
-     * Sorts the items in the collection by a specified key.
+     * Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    sortBy(key: string, order: SortOrder = "ASC"): Collection {
+        if (order.toLowerCase() === "desc") {
+            return this.sortByDesc(key);
+        }
+        return this.sortByAsc(key);
+    }
+
+    /**
+     * Sorts the items in the collection by a specified key in descending order.
      * @param key The key to sort items by.
      * @returns {Collection} The sorted collection instance.
      */
-    sortBy(key: string): Collection {
+    sortByAsc(key: string): Collection {
         this.items = this.items.sort((a, b) => {
             if (a[key] > b[key]) {
                 return 1;
@@ -392,8 +405,36 @@ export class Collection {
      * @returns {Collection} The sorted collection instance.
      */
     sortByDesc(key: string): Collection {
-        this.items = this.sortBy(key).reverse().all();
+        this.items = this.sortByAsc(key).reverse().all();
         return this;
+    }
+
+    /**
+     * Alias for the `sortBy` method. Sorts the items in the collection by a specified key and order.
+     * @param key The key to sort items by.
+     * @param order The order to sort by (ASC or DESC).
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderBy(key: string, direction: SortOrder = "ASC"): Collection {
+        return this.sortBy(key, direction);
+    }
+
+    /**
+     * Alias for the `sortByAsc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByAsc(key: string): Collection {
+        return this.sortByAsc(key);
+    }
+
+    /**
+     * Alias for the `sortByDesc` method. Sorts the items in the collection by a specified key in descending order.
+     * @param key The key to sort items by.
+     * @returns {Collection} The sorted collection instance.
+     */
+    orderByDesc(key: string): Collection {
+        return this.sortByDesc(key);
     }
 
     /**

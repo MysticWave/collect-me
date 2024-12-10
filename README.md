@@ -352,12 +352,33 @@ items.groupBy("occupation");
 */
 ```
 
-### sortBy(key)
+### sortBy(key, order = 'ASC')
 
 Sorts the items in the collection by a specified key.
 
 ```javascript
-items.sortBy("name");
+items.sortBy("name", "ASC");
+/* 
+[
+    {name: "desert fox", occupation: "desert"},
+    {name: "fish", occupation: "ocean"},
+    {name: "scorpio", occupation: "desert"},
+    {name: "squid", occupation: "ocean"},
+]
+*/
+```
+
+| order | description              |           |
+| ----- | ------------------------ | --------- |
+| ASC   | sort in ascending order  | (default) |
+| DESC  | sort in descending order |           |
+
+### sortByAsc(key)
+
+Sorts the items in the collection by a specified key in ascending order.
+
+```javascript
+items.sortByAsc("name");
 /* 
 [
     {name: "desert fox", occupation: "desert"},
@@ -383,6 +404,18 @@ items.sortByDesc("name");
 ]
 */
 ```
+
+### orderBy(key, order = 'ASC')
+
+Alias for the `sortBy` method.
+
+### orderByAsc(key)
+
+Alias for the `sortByAsc` method.
+
+### orderByDesc(key)
+
+Alias for the `sortByDesc` method.
 
 ### toArray()
 
