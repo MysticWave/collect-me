@@ -8,7 +8,7 @@ export class Collection {
     private items: any[];
 
     constructor(items: any[] = []) {
-        this.items = items;
+        this.items = [...items];
 
         // Return a Proxy to allow index access
         return new Proxy(this, {
