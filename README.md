@@ -443,3 +443,11 @@ Converts the collection into a JSON string.
 ```javascript
 items.toJSON(); // "[1, 2, 3]"
 ```
+
+### join()
+
+Joins the items in the collection using a given separator.
+
+```javascript
+items.join(","); // "1,2,3"
+```
