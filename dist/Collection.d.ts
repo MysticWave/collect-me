@@ -331,6 +331,13 @@ export declare class Collection {
      */
     isNotEmpty(): boolean;
     /**
+     *  Joins the items in the collection using a given separator.
+     *
+     * @param separator - The separator to use between items.
+     * @returns {string} The joined string.
+     */
+    join(separator?: string): string;
+    /**
      * Makes the collection iterable using a `for...of` loop.
      * @returns {Iterator} An iterator for the collection.
      */
