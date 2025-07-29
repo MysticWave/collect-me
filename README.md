@@ -106,6 +106,14 @@ Filters the items in the collection based on a callback function.
 items.filter((item) => item > 1); // [2, 3]
 ```
 
+### forEach(callback)
+
+Applies a callback function to each item in the collection.
+
+```javascript
+items.forEach((item) => console.log(item)); // 1, 2
+```
+
 ### reduce(callback, initialValue)
 
 Reduces the collection to a single value using a callback function.
