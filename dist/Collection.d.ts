@@ -40,6 +40,12 @@ export declare class Collection {
      */
     filter(callback: callback): Collection;
     /**
+     * Applies a callback function to each item in the collection.
+     * @param callback The function to execute on each item.
+     * @returns {Collection} The collection instance.
+     */
+    forEach(callback: callback): Collection;
+    /**
      * Reduces the collection to a single value using a callback function.
      * @param callback The function to execute on each element.
      * @param initialValue The initial accumulator value.
