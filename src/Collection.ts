@@ -398,8 +398,12 @@ export class Collection {
      */
     sortByAsc(key: string): Collection {
         this.items = this.items.sort((a, b) => {
-            const valA = getValueByPath(a, key);
-            const valB = getValueByPath(b, key);
+            let valA = getValueByPath(a, key);
+            let valB = getValueByPath(b, key);
+
+            // Convert to number if both are numeric strings
+            if (isValidNumber(valA)) valA = Number(valA);
+            if (isValidNumber(valB)) valB = Number(valB);
 
             if (valA > valB) return 1;
             if (valA < valB) return -1;
@@ -683,8 +687,15 @@ const like = (search: any, subject: any, strict: boolean = false) => {
     return search == subject;
 };
 
-const getValueByPath = (obj: GenericObject, path: string) => {
+const getValueByPath = (obj: GenericObject, path: string): any => {
     return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+};
+
+const isValidNumber = (value: any): boolean => {
+    if (value === null || value === undefined) return false;
+    if (value === "") return false;
+    if (typeof value === "boolean") return false;
+    return !isNaN(value) && isFinite(value);
 };
 
 const flat = (items: any[]) => {
