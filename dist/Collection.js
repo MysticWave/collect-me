@@ -346,8 +346,13 @@ class Collection {
      */
     sortByAsc(key) {
         this.items = this.items.sort((a, b) => {
-            const valA = getValueByPath(a, key);
-            const valB = getValueByPath(b, key);
+            let valA = getValueByPath(a, key);
+            let valB = getValueByPath(b, key);
+            // Convert to number if both are numeric strings
+            if (isValidNumber(valA))
+                valA = Number(valA);
+            if (isValidNumber(valB))
+                valB = Number(valB);
             if (valA > valB)
                 return 1;
             if (valA < valB)
@@ -615,6 +620,15 @@ const like = (search, subject, strict = false) => {
 };
 const getValueByPath = (obj, path) => {
     return path.split(".").reduce((acc, key) => acc && acc[key], obj);
+};
+const isValidNumber = (value) => {
+    if (value === null || value === undefined)
+        return false;
+    if (value === "")
+        return false;
+    if (typeof value === "boolean")
+        return false;
+    return !isNaN(value) && isFinite(value);
 };
 const flat = (items) => {
     return items.reduce((acc, item) => {
