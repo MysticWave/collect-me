@@ -398,12 +398,11 @@ export class Collection {
      */
     sortByAsc(key: string): Collection {
         this.items = this.items.sort((a, b) => {
-            if (a[key] > b[key]) {
-                return 1;
-            }
-            if (a[key] < b[key]) {
-                return -1;
-            }
+            const valA = getValueByPath(a, key);
+            const valB = getValueByPath(b, key);
+
+            if (valA > valB) return 1;
+            if (valA < valB) return -1;
             return 0;
         });
         return this;
