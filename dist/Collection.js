@@ -346,12 +346,12 @@ class Collection {
      */
     sortByAsc(key) {
         this.items = this.items.sort((a, b) => {
-            if (a[key] > b[key]) {
+            const valA = getValueByPath(a, key);
+            const valB = getValueByPath(b, key);
+            if (valA > valB)
                 return 1;
-            }
-            if (a[key] < b[key]) {
+            if (valA < valB)
                 return -1;
-            }
             return 0;
         });
         return this;
